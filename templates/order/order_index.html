@@ -1,0 +1,62 @@
+{% extends 'base/base_main.html' %}
+
+{% block content %}
+    <div class="container">
+        <table class="table">
+            <thead>
+                <td>用户id</td>
+                <td>订单id</td>
+                <td>状态</td>
+                <td>创建时间</td>
+                <td>订单总金额</td>
+                <td>清单</td>
+                <td>操作</td>
+            </thead>
+            {% for i in all_orders %}
+                <tr>
+                    <td>{{ i.user_id }}</td>
+                    <td>{{ i.id }}</td>
+                    <td class="o_status">{{ i.ch_status }}</td>
+                    <td>{{ i.created_time }}</td>
+                    <td>{{ i.sum_money }}</td>
+                    <td>
+                        <ul>
+                            {% for j in i.order_items %}
+                                <li>{{ j.goods.productlongname }}</li>
+                            {% endfor %}
+
+                        </ul>
+
+                    </td>
+                    <td>
+{#                         1: "待付款",
+        2: "已付款",
+        3: "已发货",
+        4: "已收货",
+        5: "待评价",
+        6: "已评价"#}
+                        <select name="" id="" o_id="{{ i.id }}">
+                            <option value="1" {{ "selected" if i.status==1 }}>待付款</option>
+                            <option value="2" {{ "selected" if i.status==2 }}>已付款</option>
+                            <option value="3" {{ "selected" if i.status==3 }}>已发货</option>
+                            <option value="4" {{ "selected" if i.status==4 }}>已收货</option>
+                            <option value="5" {{ "selected" if i.status==5 }}>待评价</option>
+                            <option value="6" {{ "selected" if i.status==6 }}>已评价</option>
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+{#    清空所有的li的active class#}
+    <script>
+        $("li").removeClass("active");
+        $("#order_li").addClass("active");
+    </script>
+    <script src="{{ url_for('static', filename='bg/order/js/order.js') }}"></script>
+{% endblock %}
